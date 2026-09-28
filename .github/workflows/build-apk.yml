@@ -12,12 +12,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Unzip Android project
+        shell: bash
         run: |
-          unzip -q Varjokruunu_RPG_4.0_Android_projekti.zip
-                sed -i "s/version '8.10.2'/version '8.10.1'/" VarjokruunuAndroid/build.gradle
-          mv VarjokruunuAndroid/* .
-          mv VarjokruunuAndroid/.[!.]* . 2>/dev/null || true
-          rmdir VarjokruunuAndroid
+          set -e
+          mkdir extracted
+          ZIP_FILE=$(find . -maxdepth 1 -type f -name "*.zip" | head -n 1)
+          echo "Using ZIP: $ZIP_FILE"
+          unzip -q "$ZIP_FILE" -d extracted
+
+          PROJECT_DIR=$(dirname "$(find extracted -type f -name "settings.gradle" | head -n 1)")
+          echo "Project directory: $PROJECT_DIR"
+
+          cp -r "$PROJECT_DIR"/. .
 
       - name: Set up Java
         uses: actions/setup-java@v4
