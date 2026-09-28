@@ -14,6 +14,7 @@ jobs:
       - name: Unzip Android project
         run: |
           unzip -q Varjokruunu_Android_Studio_projekti.zip
+                sed -i "s/version '8.10.2'/version '8.10.1'/" VarjokruunuAndroid/build.gradle
           mv VarjokruunuAndroid/* .
           mv VarjokruunuAndroid/.[!.]* . 2>/dev/null || true
           rmdir VarjokruunuAndroid
